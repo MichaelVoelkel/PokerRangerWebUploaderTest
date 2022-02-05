@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master, ]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-mac:
+    runs-on: [self-hosted, macOS]
+    strategy:
+      fail-fast: false
+
+    steps:
+    - name: Upload Files
+      id: upload
+      uses: JantHsueh/upload-file-action@master
+      with:
+        url: http://localhost:8000/api/artifact_upload?api_token={{ secrets.token }}
+        #forms: '{"_api_key":"${{ secrets.pgyer_key }}","buildInstallType":3}'
+        fileForms: '{"revision":"/revision"}'
